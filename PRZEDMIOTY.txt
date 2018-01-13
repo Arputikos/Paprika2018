@@ -1,0 +1,19 @@
+Analiza matematyczna 1 
+Programowanie 1 - strukturalne 
+Algebra liniowa z geometri� 
+Elementy logiki i teorii mnogo�ci 
+Podstawy elektroniki 
+Podstawy systemu UNIX 
+Analiza matematyczna 2 
+Metody numeryczne 1 
+Programowanie 2 - obiektowe 
+Angielski
+Matematyka dyskretna 1
+Techniki prezentacji 
+Algorytmy i struktury danych 1 
+Matematyka dyskretna 2 
+Metody numeryczne 2 
+Programowanie 3 - zaawansowane 
+R�wnania r�niczkowe 	
+Transmisja danych 
+Systemy operacyjne 1 
