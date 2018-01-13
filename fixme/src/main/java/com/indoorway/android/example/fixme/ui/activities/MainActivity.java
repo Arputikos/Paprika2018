@@ -9,6 +9,7 @@ import android.view.View;
 
 import com.indoorway.android.common.sdk.IndoorwaySdk;
 import com.indoorway.android.example.fixme.R;
+import com.indoorway.android.example.fixme.controller.UserController;
 import com.indoorway.android.example.fixme.preferences.VisitorPreferences;
 import com.indoorway.android.qrcode.sdk.IndoorwayQrCodeSdk;
 

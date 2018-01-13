@@ -1,11 +1,13 @@
 package com.indoorway.android.example.fixme.ui.activities;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 
 import com.indoorway.android.common.sdk.listeners.generic.Action1;
 import com.indoorway.android.common.sdk.model.Coordinates;
@@ -13,6 +15,7 @@ import com.indoorway.android.common.sdk.model.IndoorwayMap;
 import com.indoorway.android.example.fixme.R;
 import com.indoorway.android.example.fixme.controller.AttachmentsController;
 import com.indoorway.android.example.fixme.controller.ReportController;
+import com.indoorway.android.example.fixme.controller.UserController;
 import com.indoorway.android.fragments.sdk.map.IndoorwayMapFragment;
 import com.indoorway.android.fragments.sdk.map.MapFragment;
 import com.indoorway.android.map.sdk.view.MapView;
@@ -26,6 +29,10 @@ public class MapActivity extends AppCompatActivity implements AttachmentsControl
 
     @Nullable
     MarkersLayer dotLayer;
+    MarkersLayer testLayer;
+    MarkersLayer usersLayer;
+
+    UserController userController;
 
     AttachmentsController attachmentsController;
     ReportController reportController;
@@ -37,6 +44,8 @@ public class MapActivity extends AppCompatActivity implements AttachmentsControl
 
         attachmentsController = new AttachmentsController(this, this, this);
         reportController = new ReportController(this);
+
+        userController = new UserController(this);
     }
 
     @Override
@@ -73,6 +82,21 @@ public class MapActivity extends AppCompatActivity implements AttachmentsControl
             @Override
             public void onAction(IndoorwayMap indoorwayMap) {
                 dotLayer = getMapFragment().getMapView().getMarker().addLayer(20f);
+                /*testLayer = getMapFragment().getMapView().getMarker().addLayer(10f); */
+                usersLayer = getMapFragment().getMapView().getMarker().addLayer(10f);
+
+                /*testLayer.add(
+                        new DrawableCircle(
+                                Integer.toString(1000),
+                                5f,       // circle radius
+                                Color.GREEN,    // color
+                                Color.GREEN,    // outline color
+                                1f,   // outline width
+                                new Coordinates(52.222039, 21.006772)
+                        )
+                );*/
+
+                userController.drawUsersLocations(usersLayer);
             }
         });
         mapView.getTouch().setOnClickListener(new Action1<Coordinates>() {
@@ -91,6 +115,24 @@ public class MapActivity extends AppCompatActivity implements AttachmentsControl
                 }
             }
         });
+
+
+
+        //MarkersLayer testLayer = mapView.getMarker().addLayer(10f);
+        /*if (testLayer != null) {
+            testLayer.add(
+                    new DrawableCircle(
+                            Integer.toString(1000),
+                            5f,       // circle radius
+                            Color.GREEN,    // color
+                            Color.GREEN,    // outline color
+                            1f,   // outline width
+                            new Coordinates(52.222039, 21.006772)
+                    )
+            );
+        } else {
+            Log.d("Rika Draw", "testLayer == null");
+        }*/
 
         // start positioning service
         mapFragment.startPositioningService();
