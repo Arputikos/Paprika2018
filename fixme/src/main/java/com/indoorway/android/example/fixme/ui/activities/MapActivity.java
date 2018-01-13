@@ -8,21 +8,28 @@ import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.widget.Toast;
 
+import com.indoorway.android.common.sdk.IndoorwaySdk;
 import com.indoorway.android.common.sdk.listeners.generic.Action1;
 import com.indoorway.android.common.sdk.model.Coordinates;
 import com.indoorway.android.common.sdk.model.IndoorwayMap;
+import com.indoorway.android.common.sdk.model.IndoorwayObjectParameters;
+import com.indoorway.android.common.sdk.model.VisitorLocation;
+import com.indoorway.android.common.sdk.task.IndoorwayTask;
 import com.indoorway.android.example.fixme.R;
 import com.indoorway.android.example.fixme.controller.AttachmentsController;
 import com.indoorway.android.example.fixme.controller.ReportController;
 import com.indoorway.android.example.fixme.controller.UserController;
 import com.indoorway.android.fragments.sdk.map.IndoorwayMapFragment;
 import com.indoorway.android.fragments.sdk.map.MapFragment;
+import com.indoorway.android.map.sdk.listeners.OnObjectSelectedListener;
 import com.indoorway.android.map.sdk.view.MapView;
 import com.indoorway.android.map.sdk.view.drawable.figures.DrawableCircle;
 import com.indoorway.android.map.sdk.view.drawable.layers.MarkersLayer;
 
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 public class MapActivity extends AppCompatActivity implements AttachmentsController.MapFragmentProvider, AttachmentsController.AttachmentsListener,
         MapFragment.OnMapFragmentReadyListener {
@@ -82,57 +89,48 @@ public class MapActivity extends AppCompatActivity implements AttachmentsControl
             @Override
             public void onAction(IndoorwayMap indoorwayMap) {
                 dotLayer = getMapFragment().getMapView().getMarker().addLayer(20f);
-                /*testLayer = getMapFragment().getMapView().getMarker().addLayer(10f); */
                 usersLayer = getMapFragment().getMapView().getMarker().addLayer(10f);
 
-                /*testLayer.add(
-                        new DrawableCircle(
-                                Integer.toString(1000),
-                                5f,       // circle radius
-                                Color.GREEN,    // color
-                                Color.GREEN,    // outline color
-                                1f,   // outline width
-                                new Coordinates(52.222039, 21.006772)
-                        )
-                );*/
-
                 userController.drawUsersLocations(usersLayer);
+
             }
         });
+
         mapView.getTouch().setOnClickListener(new Action1<Coordinates>() {
             @Override
-            public void onAction(Coordinates coordinates) {
-                if (dotLayer != null) {
-                    DrawableCircle circle = new DrawableCircle(
-                            "x", // id
-                            1f, // radius
-                            ContextCompat.getColor(MapActivity.this, R.color.error),
-                            coordinates
-                    );
-                    dotLayer.add(circle);
+            public void onAction(final Coordinates coordinates) {
+                IndoorwaySdk.instance()
+                        .visitors()
+                        .locations()
+                        .setOnCompletedListener(new Action1<List<VisitorLocation>>() {
+                            @Override
+                            public void onAction(List<VisitorLocation> visitorLocations) {
+                                for (VisitorLocation userLocation : visitorLocations) {
+                                    if(coordinates != null) {
+                                        try{
+                                            if (System.currentTimeMillis() - userLocation.getTimestamp().getTime() < 60000) {
+                                                if (coordinates.getLatitude() < userLocation.getLat() + 0.4f && coordinates.getLatitude() > userLocation.getLat() - 0.4f && coordinates.getLongitude() < userLocation.getLon() + 0.4f && coordinates.getLongitude() > userLocation.getLon() - 0.4f)
+                                                    Toast.makeText(MapActivity.this, userLocation.getVisitorUuid(), Toast.LENGTH_SHORT).show();
+                                            }
+                                        }
+                                        catch(Exception ex){
+                                            Log.e("ERROR", "Coordinates are null");
+                                        }
+                                    }
+                                }
+                            }
+                        })
+                        .setOnFailedListener(new Action1<IndoorwayTask.ProcessingException>() {
+                            @Override
+                            public void onAction(IndoorwayTask.ProcessingException e) {
+                                // todo message: failed
+                                Log.d("Rika ULoc", "Location fetch failed");
+                            }
+                        })
+                        .execute();
 
-                    attachmentsController.onAction(coordinates);
-                }
             }
         });
-
-
-
-        //MarkersLayer testLayer = mapView.getMarker().addLayer(10f);
-        /*if (testLayer != null) {
-            testLayer.add(
-                    new DrawableCircle(
-                            Integer.toString(1000),
-                            5f,       // circle radius
-                            Color.GREEN,    // color
-                            Color.GREEN,    // outline color
-                            1f,   // outline width
-                            new Coordinates(52.222039, 21.006772)
-                    )
-            );
-        } else {
-            Log.d("Rika Draw", "testLayer == null");
-        }*/
 
         // start positioning service
         mapFragment.startPositioningService();

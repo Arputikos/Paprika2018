@@ -18,16 +18,19 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.indoorway.android.common.sdk.listeners.generic.Action0;
 import com.indoorway.android.common.sdk.listeners.generic.Action1;
 import com.indoorway.android.common.sdk.model.Coordinates;
 import com.indoorway.android.common.sdk.model.IndoorwayMap;
+import com.indoorway.android.common.sdk.model.IndoorwayObjectParameters;
 import com.indoorway.android.common.sdk.model.IndoorwayPosition;
 import com.indoorway.android.example.fixme.R;
 import com.indoorway.android.example.fixme.preferences.VisitorPreferences;
 import com.indoorway.android.location.sdk.IndoorwayLocationSdk;
 import com.indoorway.android.location.sdk.model.IndoorwayLocationSdkError;
+import com.indoorway.android.map.sdk.listeners.OnObjectSelectedListener;
 import com.indoorway.android.map.sdk.view.MapView;
 import com.indoorway.android.map.sdk.view.drawable.figures.DrawableCircle;
 import com.indoorway.android.map.sdk.view.drawable.layers.MarkersLayer;
@@ -149,7 +152,7 @@ public class MapFragment extends Fragment {
     }
 
     public MapFragment setOnMapScreenshotListener(@Nullable OnMapScreenshotListener onMapScreenshotListener) {
-        this.onMapScreenshotListener = onMapScreenshotListener;
+       // this.onMapScreenshotListener = onMapScreenshotListener;
         return this;
     }
 
@@ -182,25 +185,6 @@ public class MapFragment extends Fragment {
             @Override
             public void onAction() {
                 progressView.setVisibility(View.GONE);
-            }
-        });
-        mapView.getTouch().setOnClickListener(new Action1<Coordinates>() {
-            @Override
-            public void onAction(Coordinates coordinates) {
-                if (onClickListener != null)
-                    onClickListener.onAction(coordinates);
-
-                if (markerLayer != null) {
-                    DrawableCircle circle = new DrawableCircle(
-                            "x", // id
-                            1f, // radius
-                            ContextCompat.getColor(getContext(), R.color.error),
-                            Color.TRANSPARENT,
-                            0.0f, // outline width
-                            coordinates
-                    );
-                    markerLayer.add(circle);
-                }
             }
         });
     }

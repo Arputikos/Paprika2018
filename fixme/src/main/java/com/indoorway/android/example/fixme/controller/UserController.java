@@ -8,10 +8,12 @@ import android.widget.Toast;
 import com.indoorway.android.common.sdk.IndoorwaySdk;
 import com.indoorway.android.common.sdk.listeners.generic.Action1;
 import com.indoorway.android.common.sdk.model.Coordinates;
+import com.indoorway.android.common.sdk.model.IndoorwayObjectParameters;
 import com.indoorway.android.common.sdk.model.RegisteredVisitor;
 import com.indoorway.android.common.sdk.model.Visitor;
 import com.indoorway.android.common.sdk.model.VisitorLocation;
 import com.indoorway.android.common.sdk.task.IndoorwayTask;
+import com.indoorway.android.map.sdk.listeners.OnObjectSelectedListener;
 import com.indoorway.android.map.sdk.view.MapView;
 import com.indoorway.android.map.sdk.view.drawable.figures.DrawableCircle;
 import com.indoorway.android.map.sdk.view.drawable.layers.MarkersLayer;
@@ -78,16 +80,16 @@ public class UserController {
                             if (userLocation != null) {
                                 try {
                                     if (System.currentTimeMillis() - userLocation.getTimestamp().getTime() < 60000) {
-                                        drawLayer.add(
-                                                new DrawableCircle(
-                                                        Integer.toString(markerId++),
-                                                        0.4f,       // circle radius
-                                                        Color.GREEN,    // color
-                                                        Color.GREEN,    // outline color
-                                                        0f,   // outline width
-                                                        new Coordinates(userLocation.getLat(), userLocation.getLon())
-                                                )
-                                        );
+                                        DrawableCircle circle = new DrawableCircle(
+                                                Integer.toString(markerId++),
+                                                0.4f,       // circle radius
+                                                Color.GREEN,    // color
+                                                Color.GREEN,    // outline color
+                                                0f,   // outline width
+                                                new Coordinates(userLocation.getLat(), userLocation.getLon()));
+
+                                        drawLayer.add(circle);
+
                                     }
                                 } catch (Exception ex) {
                                     Log.e("Rika ULoc", "Location is null");
@@ -110,4 +112,5 @@ public class UserController {
 
                 //Log.d("Rika ULoc", "Users detected: " + usersDetected);
     }
+
 }
