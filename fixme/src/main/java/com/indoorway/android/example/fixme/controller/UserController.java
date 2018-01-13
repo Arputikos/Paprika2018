@@ -75,19 +75,20 @@ public class UserController {
                         int markerId = 1;
                         Log.d("Rika ULoc", "Users detected: " + visitorLocations.size());
                         for (VisitorLocation userLocation : visitorLocations) {
-                            Log.d("Rika ULoc", "User " + usersDetected + " : " + userLocation.toString());
                             if (userLocation != null) {
                                 try {
-                                    drawLayer.add(
-                                            new DrawableCircle(
-                                                    Integer.toString(markerId++),
-                                                    0.4f,       // circle radius
-                                                    Color.GREEN,    // color
-                                                    Color.GREEN,    // outline color
-                                                    0f,   // outline width
-                                                    new Coordinates(userLocation.getLat(), userLocation.getLon())
-                                            )
-                                    );
+                                    if (System.currentTimeMillis() - userLocation.getTimestamp().getTime() < 60000) {
+                                        drawLayer.add(
+                                                new DrawableCircle(
+                                                        Integer.toString(markerId++),
+                                                        0.4f,       // circle radius
+                                                        Color.GREEN,    // color
+                                                        Color.GREEN,    // outline color
+                                                        0f,   // outline width
+                                                        new Coordinates(userLocation.getLat(), userLocation.getLon())
+                                                )
+                                        );
+                                    }
                                 } catch (Exception ex) {
                                     Log.e("Rika ULoc", "Location is null");
                                 }
