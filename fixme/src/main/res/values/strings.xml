@@ -1,0 +1,39 @@
+<resources>
+    <string name="app_name">Indoorway FixMe</string>
+    <string name="e_mail">E-mail</string>
+
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="search">Search…</string>
+    <string name="log_out">Log out</string>
+    <string name="clear">Clear</string>
+
+    <string name="show_menu">Show menu</string>
+    <string name="hide_menu">Hide menu</string>
+    <string name="sorry">Sorry</string>
+    <string name="ble_is_not_supported">Bluetooth Low Energy is not supported on your device. We are unable to find your indoor location.</string>
+    <string name="enable_bluetooth">Enable bluetooth</string>
+    <string name="in_order_to_find_your_position_enable_bluetooth">In order to find your indoor position, you need to enable bluetooth on your device.</string>
+    <string name="enable_location">Enable location</string>
+    <string name="in_order_to_find_your_position_enable_location">In order to find your indoor position you must enable location in settings.</string>
+    <string name="cancel">Cancel</string>
+    <string name="ok">OK</string>
+    <string name="name">Name</string>
+    <string name="next">Next</string>
+    <string name="looking_for_some_beacons">Looking for some beacons…</string>
+    <string name="loading_a_map">Loading a map…</string>
+    <string name="male">Male</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+    <string name="confirmation">Confirmation</string>
+    <string name="scan_qr_code">Scan QR code</string>
+    <string name="fix_me_if_you_can">Fix me if you can</string>
+    <string name="do_you_want_to_send_a_report">Do you want to send a report?</string>
+    <string name="error">Error</string>
+    <string name="error_ocurred_during_camera_capture">Error occurred during camera capture.</string>
+    <string name="share_your_report">Share your report</string>
+    <string name="maintenance_report">Maintenance report</string>
+    <string name="building_map">\n\n\nBuilding: %1$s\nMap: %2$s\nPosition: %3$f, %4$f</string>
+    <string name="permission_to_read_report_images">Permission to read report images</string>
+    <string name="permission_to_write_report_images">Permission to write report images</string>
+    <string name="license">License</string>
+</resources>
