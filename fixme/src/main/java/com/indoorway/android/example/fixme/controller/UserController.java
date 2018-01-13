@@ -45,29 +45,6 @@ public class UserController {
 
         IndoorwaySdk.instance()
                 .visitors()
-                .list()
-                .setOnCompletedListener(new Action1<List<RegisteredVisitor>>() {
-                    @Override
-                    public void onAction(List<RegisteredVisitor> registeredVisitors) {
-                        ++usersDetected;
-                        int markerId = 1;
-                        Log.d("Rika ULoc", "Users detected: " + registeredVisitors.size());
-                        for (RegisteredVisitor user : registeredVisitors) {
-                            Log.d("Rika ULoc", "User " + usersDetected + " : " + user.toString());
-                        }
-                    }
-                })
-                .setOnFailedListener(new Action1<IndoorwayTask.ProcessingException>() {
-                    @Override
-                    public void onAction(IndoorwayTask.ProcessingException e) {
-                        Log.d("Rika ULoc", "User fetch failed");
-                        Toast.makeText(displayContext, "Failed to load users :(", Toast.LENGTH_LONG).show();
-                    }
-                }).execute();
-        usersDetected = 0;
-
-        IndoorwaySdk.instance()
-                .visitors()
                 .locations()
                 .setOnCompletedListener(new Action1<List<VisitorLocation>>() {
                     @Override
@@ -76,10 +53,22 @@ public class UserController {
                         ++usersDetected;
                         int markerId = 1;
                         Log.d("Rika ULoc", "Users detected: " + visitorLocations.size());
-                        for (VisitorLocation userLocation : visitorLocations) {
+                        for (final VisitorLocation userLocation : visitorLocations) {
                             if (userLocation != null) {
                                 try {
                                     if (System.currentTimeMillis() - userLocation.getTimestamp().getTime() < 60000) {
+                                        Log.d("Rika ULoc", "UserLoc detected: " + userLocation.toString());
+
+
+                                        boolean userAlreadyFound = false;
+                                        for (User userElem : UsersCollection.instance().getCollection()) {
+                                            User user = new User();
+                                            user.setVisitorLocation(userLocation);
+                                            user.setUuid(userLocation.getVisitorUuid());
+                                            UsersCollection.instance().add(user);
+                                            //logUser(user);
+                                        }
+
                                         DrawableCircle circle = new DrawableCircle(
                                                 Integer.toString(markerId++),
                                                 0.4f,       // circle radius
@@ -89,11 +78,11 @@ public class UserController {
                                                 new Coordinates(userLocation.getLat(), userLocation.getLon()));
 
                                         drawLayer.add(circle);
-
                                     }
                                 } catch (Exception ex) {
-                                    Log.e("Rika ULoc", "Location is null");
+                                    //Log.e("Rika ULoc", "Location is null");
                                 }
+
                             } else {
                                 Log.d("Rika ULoc", "User" + markerId + " is null");
                             }
@@ -110,7 +99,48 @@ public class UserController {
                 })
                 .execute();
 
-                //Log.d("Rika ULoc", "Users detected: " + usersDetected);
+        IndoorwaySdk.instance()
+                .visitors()
+                .list()
+                .setOnCompletedListener(new Action1<List<RegisteredVisitor>>() {
+                    @Override
+                    public void onAction(List<RegisteredVisitor> registeredVisitors) {
+                        Log.d("Rika ULoc", "Inside visitors.list");
+                        for (RegisteredVisitor userData : registeredVisitors) {
+
+                            boolean userAlreadyFound = false;
+                            for (User userElem : UsersCollection.instance().getCollection()) {
+                                if (userElem.getUuid().equals(userData.getUuid())) {
+                                    Log.d("Rika loop", "user loc found");
+                                    userElem.setVisitorData(userData);
+                                    userAlreadyFound = true;
+                                    logUser(userElem);
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                })
+                .setOnFailedListener(new Action1<IndoorwayTask.ProcessingException>() {
+                    @Override
+                    public void onAction(IndoorwayTask.ProcessingException e) {
+                        Log.d("Rika ULoc", "User fetch failed");
+                        Toast.makeText(displayContext, "Failed to load users :(", Toast.LENGTH_LONG).show();
+                    }
+                }).execute();
+
+        Visitor me = IndoorwaySdk.instance().visitor().me();
+        Log.d("Rika me", "Me: " + me.toString());
     }
 
+    public void logDetectedUsers() {
+        Log.d("Rika usersList", "size = " + UsersCollection.instance().size());
+        for (User user : UsersCollection.instance().getCollection()) {
+            Log.d("Rika User", "Uuid=" + user.getUuid() + ", data: " + user.getVisitorData() + ", loc: " + user.getVisitorLocation());
+        }
+    }
+
+    public void logUser(User user) {
+        Log.d("Rika User", "Uuid=" + user.getUuid() + ", data: " + user.getVisitorData() + ", loc: " + user.getVisitorLocation());
+    }
 }
