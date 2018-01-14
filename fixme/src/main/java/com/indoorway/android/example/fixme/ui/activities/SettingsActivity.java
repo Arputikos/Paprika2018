@@ -26,6 +26,7 @@ import android.widget.ImageView;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.ToggleButton;
 
 import com.indoorway.android.example.fixme.R;
 
@@ -42,8 +43,10 @@ public class SettingsActivity extends AppCompatActivity {
 
     void LoadData()
     {
-        findViewById(R.id.switchActive).setActivated(Database.isActive());
-        findViewById(R.id.switchNavigate).setActivated(Database.isNavigate());
+        Switch a = findViewById(R.id.switchActive);
+        Switch n = findViewById(R.id.switchNavigate);
+        a.setChecked(Database.isActive());
+        n.setChecked(Database.isNavigate());
         selectedSubjectID = Database.getSubjectIDx();
 
         UpdateView();
@@ -59,8 +62,6 @@ public class SettingsActivity extends AppCompatActivity {
             tv.setText(getResources().getString(R.string.learningNow)+" "+Globals.Subjects[selectedSubjectID]);
         else
             tv.setText(getResources().getString(R.string.txtNoSubject)+" ("+getResources().getString(R.string.selected)+" "+Globals.Subjects[selectedSubjectID]+")");
-
-        setSubject.setEnabled(check);
     }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,8 +78,9 @@ public class SettingsActivity extends AppCompatActivity {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 selectedSubjectID = which;
+                Database.setActive(true);//after selecting subject automatically activate the status
                 Database.setSubjectIDx(selectedSubjectID);
-                UpdateView();
+                LoadData();
                 //selectedSubjectID = ...  and save todo
             }
         });
@@ -104,7 +106,6 @@ public class SettingsActivity extends AppCompatActivity {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 Database.setActive(isChecked);
                 Button setSubject = findViewById(R.id.btnSetSubject);
-                setSubject.setEnabled(isChecked);
                 UpdateView();
             }
         });
@@ -125,5 +126,11 @@ public class SettingsActivity extends AppCompatActivity {
             }
 
         });
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        LoadData();
     }
 }

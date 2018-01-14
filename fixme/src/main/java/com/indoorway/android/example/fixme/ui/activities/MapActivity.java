@@ -39,7 +39,9 @@ public class MapActivity extends AppCompatActivity implements AttachmentsControl
 
     void LoadData()
     {
-        findViewById(R.id.btnMapActive).setEnabled(Database.isActive());
+        ToggleButton tgl = findViewById(R.id.btnMapActive);
+        tgl.setChecked(Database.isActive());
+
         TextView t = findViewById(R.id.txtMapSubject);
         String s = Globals.Subjects[Database.getSubjectIDx()];
         if(!Database.isActive())
@@ -73,6 +75,7 @@ public class MapActivity extends AppCompatActivity implements AttachmentsControl
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 Database.setActive(isChecked);
+                LoadData();//reset all
                 //UpdateView();
             }
         });
