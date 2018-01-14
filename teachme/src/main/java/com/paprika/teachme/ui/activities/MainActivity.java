@@ -11,6 +11,7 @@ import android.util.Log;
 import android.view.View;
 
 import com.indoorway.android.common.sdk.IndoorwaySdk;
+import com.indoorway.android.common.sdk.model.Visitor;
 import com.paprika.teachme.R;
 import com.paprika.teachme.preferences.VisitorPreferences;
 import com.indoorway.android.qrcode.sdk.IndoorwayQrCodeSdk;
@@ -32,6 +33,20 @@ public class MainActivity extends AppCompatActivity {
 
         visitorPreferences = new VisitorPreferences(this);
         String token = visitorPreferences.token.getOrDefault("");
+
+        Visitor user = new Visitor();
+        //user.setMeta(userCourse + "," + userYear + "," + " " + "," + " ");
+        user.setName("name");
+        user.setMeta("meta");
+        //Database.SaveToCloud();//set meta
+        user.setShareLocation(true);
+        String id = user.getUuid();
+
+        IndoorwaySdk.instance().visitor().setup(user);
+
+        Database.LoadFromStorage();
+        Database.SaveToCloud();
+
 
         // scan qr code
         findViewById(R.id.btnScan).setOnClickListener(new View.OnClickListener() {

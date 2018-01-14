@@ -169,7 +169,7 @@ public class MapActivity extends AppCompatActivity implements AttachmentsControl
                                     //Toast.makeText(MapActivity.this, user.getUuid(), Toast.LENGTH_SHORT).show();
                                     runOnUiThread(new Runnable() {
                                         public void run() {
-                                            Toast.makeText(MapActivity.this, user.getUuid() + " " + user.getVisitorData().getName(), Toast.LENGTH_SHORT).show();
+                                            Toast.makeText(MapActivity.this,  user.getVisitorData().getMeta(), Toast.LENGTH_SHORT).show();
                                         }
                                     });
                                 }

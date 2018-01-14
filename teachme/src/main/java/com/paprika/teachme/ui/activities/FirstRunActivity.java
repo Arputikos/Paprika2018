@@ -32,21 +32,9 @@ public class FirstRunActivity extends AppCompatActivity {
                     String userCourse = course.getText().toString();
                     int userYear = Integer.parseInt(year.getText().toString());
 
-                    Visitor user = new Visitor();
-                    user.setName(userName);
-                    //user.setMeta(userCourse + "," + userYear + "," + " " + "," + " ");
-                    Database.SaveToCloud();//set meta
-                    user.setShareLocation(true);
-                    String id = user.getUuid();
-
-                    IndoorwaySdk.instance().visitor().setup(user);
-                    //init defaults and save to not have null
-                    Database.LoadFromStorage();
-                    Database.SaveToCloud();
-
                     Database.setName(userName);
                     Database.setCourse(userCourse);
-                    Database.setUuid(id);
+                    Database.setUuid("someId");
                     Database.setYear(userYear);
                     //go to next
                     startMapActivity();
