@@ -29,12 +29,12 @@ public class UserController {
         this.displayContext = displayContext;
         //this.mapView = mapView;
 
-        Visitor user = new Visitor();
-        user.setName("Pati");
-        user.setMeta("Programowanie Android; sala 212; 14-16");
-        user.setShareLocation(true);
-
-        IndoorwaySdk.instance().visitor().setup(user); // opis: sets visitor details and register/updates it on server
+//        Visitor user = new Visitor();
+//        user.setName("Pati");
+//        user.setMeta("Programowanie Android; sala 212; 14-16");
+//        user.setShareLocation(true);
+//
+//        IndoorwaySdk.instance().visitor().setup(user); // opis: sets visitor details and register/updates it on server
     }
 
     public void drawUsersLocations(final MarkersLayer drawLayer) {

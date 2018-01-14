@@ -7,6 +7,8 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.indoorway.android.common.sdk.IndoorwaySdk;
+import com.indoorway.android.common.sdk.model.Visitor;
 import com.paprika.teachme.R;
 
 public class FirstRunActivity extends AppCompatActivity {
@@ -24,9 +26,22 @@ public class FirstRunActivity extends AppCompatActivity {
                 EditText course = findViewById(R.id.editCourse);
                 EditText year = findViewById(R.id.editYear);
                 if(name.getText().length() > 0 &&  course.getText().length() > 0 && year.getText().length() > 0) {
-                    Database.setName(name.getText().toString());
-                    Database.setCourse(course.getText().toString());
-                    Database.setYear(Integer.parseInt(year.getText().toString()));
+                    String userName = name.getText().toString();
+                    String userCourse = course.getText().toString();
+                    int userYear = Integer.parseInt(year.getText().toString());
+
+                    Visitor user = new Visitor();
+                    user.setName(userName);
+                    user.setMeta(userCourse + "," + userYear);
+                    user.setShareLocation(true);
+                    String id = user.getUuid();
+
+                    IndoorwaySdk.instance().visitor().setup(user);
+
+                    Database.setName(userName);
+                    Database.setCourse(userCourse);
+                    Database.setYear(userYear);
+                    Database.setUuid(id);
                     //go to next
                     startMapActivity();
                 }

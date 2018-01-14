@@ -12,21 +12,35 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.paprika.teachme.R;
+import com.paprika.teachme.controller.User;
+import com.paprika.teachme.controller.UsersCollection;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class SearchResultsActivity extends AppCompatActivity {
 
     private ListView list ;
     private ArrayAdapter<String> adapter ;
+    private String subject;
 
-    String[] GetListItems(CharSequence searchItem)//if ="" then return all
+    List<String> GetListItems(CharSequence searchItem)//if ="" then return all
     {
+        List<String> listItem = new ArrayList<String>();
         //todo backend - get people, printers etc and list here all which learn /sth/ or name ...
-
-        String[] listItems = new String[3];
-        listItems[0] = "Result 1";
-        listItems[1] = "Result 2";
-        listItems[2] = "Result 3";
-        return listItems;
+        for(User user : UsersCollection.instance().getCollection()){
+            if(user.getVisitorLocation()!= null){
+               String meta = user.getVisitorData().getMeta();
+               String[] split_meta = meta.split(",");
+               if(split_meta[3].equals(subject))
+                   listItem.add(user.getVisitorData().getName());
+            }
+        }
+//        String[] listItems = new String[3];
+//        listItems[0] = "Result 1";
+//        listItems[1] = "Result 2";
+//        listItems[2] = "Result 3";
+        return listItem;
     }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,6 +49,14 @@ public class SearchResultsActivity extends AppCompatActivity {
 
         String foundItem = "test";
         foundItem = getIntent().getStringExtra("CLICKED_ITEM");
+        subject = foundItem;
+
+        for(User user : UsersCollection.instance().getCollection()){
+            if(user.getVisitorLocation()!= null){
+                   if( user.getUuid().equals(Database.getUuid()))
+                       user.getVisitorData().setMeta(Database.getCourse() + "," + Database.getYear() + ","+ Database.getUuid() + "," + foundItem);
+            }
+        }
 
         TextView title = findViewById(R.id.txtSearchResults);
         title.setText(foundItem);

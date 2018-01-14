@@ -14,6 +14,7 @@ class Data
 {
     public String name;
     public String course;
+    public String uuid;
     public int year;
     public int subjectIDx;//look in Globals.java
     public boolean isActive;
@@ -103,6 +104,16 @@ public class Database
         context = c;
     }
 
+    public static void setUuid(String uuid){
+        data.uuid = uuid;
+        SaveToStorage();
+        SaveToCloud();
+    }
+
+    public static String getUuid(){
+        return data.uuid;
+    }
+
     /*
     The data is stored in device, but synched with visitor,
     so if the user changes ... name, visitor as well as storage data are updated
@@ -112,6 +123,7 @@ public class Database
     {
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
         data.name = preferences.getString("name", "-");
+        data.uuid = preferences.getString("uuid", "-");
         data.course = preferences.getString("course", "-");
         data.year = preferences.getInt("year", 1);
         data.subjectIDx = preferences.getInt("subjectID", 0);
@@ -124,6 +136,7 @@ public class Database
         SharedPreferences.Editor edit = preferences.edit();
 
         edit.putString("name", data.name);
+        edit.putString("uuid", data.uuid);
         edit.putString("course", data.course);
         edit.putInt("year", data.year);
         edit.putInt("subjectID", data.subjectIDx);
@@ -152,6 +165,7 @@ public class Database
     private static String EncodeData()
     {
         return data.name + "," +
+                data.uuid + "," +
                 data.course + "," +
                 Integer.toString(data.year) + "," +
                 Integer.toString(data.subjectIDx) + "," +
@@ -163,16 +177,17 @@ public class Database
     private static void DecodeData(Data[] person, String D)
     {
         String[] d = D.split(",");
-        if(d.length < 6)
+        if(d.length < 7)
         {
             //error
             System.exit(-1);
         }
         person[0].name = d[0];
-        person[0].course = d[1];
-        person[0].year = Integer.parseInt(d[2]);
-        person[0].subjectIDx = Integer.parseInt(d[3]);
-        person[0].isActive = Boolean.parseBoolean(d[4]);
-        person[0].navigate = Boolean.parseBoolean(d[5]);
+        person[0].uuid = d[1];
+        person[0].course = d[2];
+        person[0].year = Integer.parseInt(d[3]);
+        person[0].subjectIDx = Integer.parseInt(d[4]);
+        person[0].isActive = Boolean.parseBoolean(d[5]);
+        person[0].navigate = Boolean.parseBoolean(d[6]);
     }
 }
