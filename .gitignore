@@ -8,5 +8,5 @@
 /captures
 .externalNativeBuild
 /.idea/
-/fixme/build/
+/teachme/build/
 /local.gradle
