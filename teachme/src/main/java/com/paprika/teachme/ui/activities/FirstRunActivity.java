@@ -32,7 +32,7 @@ public class FirstRunActivity extends AppCompatActivity {
 
                     Visitor user = new Visitor();
                     user.setName(userName);
-                    user.setMeta(userCourse + "," + userYear);
+                    user.setMeta(userCourse + "," + userYear + "," + " " + "," + " ");
                     user.setShareLocation(true);
                     String id = user.getUuid();
 

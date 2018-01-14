@@ -30,10 +30,14 @@ public class SearchResultsActivity extends AppCompatActivity {
         //todo backend - get people, printers etc and list here all which learn /sth/ or name ...
         for(User user : UsersCollection.instance().getCollection()){
             if(user.getVisitorLocation()!= null){
-               String meta = user.getVisitorData().getMeta();
-               String[] split_meta = meta.split(",");
-               if(split_meta[3].equals(subject))
-                   listItem.add(user.getVisitorData().getName());
+               Data[] person;
+               person = new Data[1];
+               Database.LoadFromCloud(user.getVisitorData(), person);
+                listItem.add(person[0].name + ", " + person[0].course);
+                //String meta = user.getVisitorData().getMeta();
+               //String[] split_meta = meta.split(",");
+               //if(split_meta[3].equals(subject))
+               //    listItem.add(user.getVisitorData().getName());
             }
         }
 //        String[] listItems = new String[3];

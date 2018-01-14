@@ -9,6 +9,7 @@ import android.util.Log;
 
 import com.indoorway.android.common.sdk.IndoorwaySdk;
 import com.indoorway.android.common.sdk.model.Visitor;
+import com.indoorway.android.common.sdk.model.VisitorData;
 
 class Data
 {
@@ -156,9 +157,9 @@ public class Database
     }
 
     //loads the data to person class
-    public static void LoadFromCloud(Data[] person)
+    public static void LoadFromCloud(VisitorData v, Data[] person)
     {
-        Visitor v = IndoorwaySdk.instance().visitor().me();
+        //Visitor v = IndoorwaySdk.instance().visitor().me();
         DecodeData(person, v.getMeta());
     }
 
