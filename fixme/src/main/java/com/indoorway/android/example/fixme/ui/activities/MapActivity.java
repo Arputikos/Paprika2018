@@ -9,6 +9,12 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.widget.Toast;
+import android.view.View;
+import android.widget.CompoundButton;
+import android.widget.EditText;
+import android.widget.Switch;
+import android.widget.TextView;
+import android.widget.ToggleButton;
 
 import com.indoorway.android.common.sdk.IndoorwaySdk;
 import com.indoorway.android.common.sdk.listeners.generic.Action1;
@@ -46,6 +52,16 @@ public class MapActivity extends AppCompatActivity implements AttachmentsControl
     AttachmentsController attachmentsController;
     ReportController reportController;
 
+    void LoadData() {
+        ToggleButton tgl = findViewById(R.id.btnMapActive);
+        tgl.setChecked(Database.isActive());
+        TextView t = findViewById(R.id.txtMapSubject);
+        String s = Globals.Subjects[Database.getSubjectIDx()];
+        if(!Database.isActive())
+        s = getResources().getString(R.string.txtNoSubject);
+        t.setText(s);
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -53,8 +69,38 @@ public class MapActivity extends AppCompatActivity implements AttachmentsControl
 
         attachmentsController = new AttachmentsController(this, this, this);
         reportController = new ReportController(this);
-
         userController = new UserController(this);
+
+        findViewById(R.id.fabSettings).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startSettingsActivity();
+            }
+        });
+        findViewById(R.id.fabSearch).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startSearchActivity();
+            }
+        });
+
+        ToggleButton active = findViewById(R.id.btnMapActive);
+        active.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                Database.setActive(isChecked);
+                LoadData();//reset all
+                //UpdateView();
+                }
+        });
+
+        LoadData();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        LoadData();
     }
 
     @Override
@@ -129,5 +175,14 @@ public class MapActivity extends AppCompatActivity implements AttachmentsControl
 
         // start positioning service
         mapFragment.startPositioningService();
+    }
+
+    void startSettingsActivity() {
+        startActivity(new Intent(this, SettingsActivity.class));
+        //finishAffinity();
+    }
+    void startSearchActivity() {
+        startActivity(new Intent(this, SearchActivity.class));
+        //finishAffinity();
     }
 }

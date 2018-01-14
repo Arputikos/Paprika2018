@@ -1,9 +1,9 @@
 <resources>
-    <string name="app_name">Indoorway FixMe</string>
+    <string name="app_name">TeachMe</string>
     <string name="e_mail">E-mail</string>
 
     <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="search">Search…</string>
+    <string name="search">Search</string>
     <string name="log_out">Log out</string>
     <string name="clear">Clear</string>
 
@@ -18,7 +18,10 @@
     <string name="cancel">Cancel</string>
     <string name="ok">OK</string>
     <string name="name">Name</string>
+    <string name="txtNoSubject">Not learning</string>
     <string name="next">Next</string>
+    <string name="back">Back</string>
+    <string name="selected">Selected: </string>
     <string name="looking_for_some_beacons">Looking for some beacons…</string>
     <string name="loading_a_map">Loading a map…</string>
     <string name="male">Male</string>
@@ -26,7 +29,7 @@
     <string name="no">No</string>
     <string name="confirmation">Confirmation</string>
     <string name="scan_qr_code">Scan QR code</string>
-    <string name="fix_me_if_you_can">Fix me if you can</string>
+    <string name="title2">Teach me if you can</string>
     <string name="do_you_want_to_send_a_report">Do you want to send a report?</string>
     <string name="error">Error</string>
     <string name="error_ocurred_during_camera_capture">Error occurred during camera capture.</string>
@@ -36,4 +39,11 @@
     <string name="permission_to_read_report_images">Permission to read report images</string>
     <string name="permission_to_write_report_images">Permission to write report images</string>
     <string name="license">License</string>
+    <string name="setSubject">Set subject</string>
+    <string name="learningNow">Learning now: </string>
+    <string name="txtActive">I\'m active (visible)</string>
+    <string name="txtNavigate">Navigate</string>
+    <string name="txtFirstRun">Welcome!</string>
+    <string name="activeOn">Active</string>
+    <string name="activeOff">Inactive</string>
 </resources>
