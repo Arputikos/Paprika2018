@@ -147,7 +147,7 @@ public class MapActivity extends AppCompatActivity implements AttachmentsControl
 
                 userController.drawUsersLocations(usersLayer);///todo
 
-                //mapFragment.startPositioningService();
+                mapFragment.startPositioningService();
             }
         });
 

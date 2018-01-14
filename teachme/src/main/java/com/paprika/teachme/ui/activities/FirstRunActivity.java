@@ -34,15 +34,15 @@ public class FirstRunActivity extends AppCompatActivity {
 
                     Visitor user = new Visitor();
                     user.setName(userName);
-                    //init defaults and save to not have null
-                    Database.LoadFromStorage();
-                    Database.SaveToCloud();
                     //user.setMeta(userCourse + "," + userYear + "," + " " + "," + " ");
                     Database.SaveToCloud();//set meta
                     user.setShareLocation(true);
                     String id = user.getUuid();
 
                     IndoorwaySdk.instance().visitor().setup(user);
+                    //init defaults and save to not have null
+                    Database.LoadFromStorage();
+                    Database.SaveToCloud();
 
                     Database.setName(userName);
                     Database.setCourse(userCourse);
