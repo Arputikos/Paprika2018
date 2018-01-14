@@ -2,9 +2,12 @@ package com.paprika.teachme.ui.activities;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 
 import com.indoorway.android.common.sdk.IndoorwaySdk;
@@ -23,13 +26,17 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        //loads from storage to memory, all user things
+        Database.SetContext(this);
+        Database.LoadFromStorage();
+
         visitorPreferences = new VisitorPreferences(this);
         String token = visitorPreferences.token.getOrDefault("");
 
-                // scan qr code
-            findViewById(R.id.btnScan).setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
+        // scan qr code
+        findViewById(R.id.btnScan).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
                 // scan qr code
                 IndoorwayQrCodeSdk.instance().startQrCodeActivity(MainActivity.this, QR_SCAN_REQUEST);
             }
@@ -82,23 +89,24 @@ public class MainActivity extends AppCompatActivity {
     /**
      * Starts map activity.
      */
-   void startNextActivity() {
-       /*SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
-       boolean firstRun = preferences.getBoolean("first-run", true);
+    void startNextActivity() {
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+        boolean firstRun = preferences.getBoolean("first-run", true);
 
-       if(firstRun)
-       {
-           startActivity(new Intent(this, FirstRunActivity.class));
-           finishAffinity();
-           return;
-       }
+        if(firstRun)
+        {
+            Log.e("a","FIRST");
+            SharedPreferences.Editor edit = preferences.edit();
+            edit.putBoolean("first-run", false);
+            edit.commit();
 
-       preferences.edit().putBoolean("first-run", false);
-       preferences.edit().apply();
-        */
-
-       Intent i = new Intent(this, FirstRunActivity.class);//todo temp give here map
-       i.putExtra("MAP_ACTIVITY_STATE", Globals.MapActivityState.NORMAL.ordinal());
+            startActivity(new Intent(this, FirstRunActivity.class));
+            finishAffinity();
+            return;
+        }
+        Log.e("a","NOT FIRST");
+        Intent i = new Intent(this, MapActivity.class);
+        i.putExtra("MAP_ACTIVITY_STATE", Globals.MapActivityState.NORMAL.ordinal());
         startActivity(i);
         finishAffinity();
     }

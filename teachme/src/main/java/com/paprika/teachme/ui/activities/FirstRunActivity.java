@@ -24,7 +24,6 @@ public class FirstRunActivity extends AppCompatActivity {
                 EditText course = findViewById(R.id.editCourse);
                 EditText year = findViewById(R.id.editYear);
                 if(name.getText().length() > 0 &&  course.getText().length() > 0 && year.getText().length() > 0) {
-                    Database.init();
                     Database.setName(name.getText().toString());
                     Database.setCourse(course.getText().toString());
                     Database.setYear(Integer.parseInt(year.getText().toString()));
