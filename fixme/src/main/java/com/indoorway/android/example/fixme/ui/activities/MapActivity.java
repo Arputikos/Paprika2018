@@ -20,7 +20,9 @@ import com.indoorway.android.common.sdk.task.IndoorwayTask;
 import com.indoorway.android.example.fixme.R;
 import com.indoorway.android.example.fixme.controller.AttachmentsController;
 import com.indoorway.android.example.fixme.controller.ReportController;
+import com.indoorway.android.example.fixme.controller.User;
 import com.indoorway.android.example.fixme.controller.UserController;
+import com.indoorway.android.example.fixme.controller.UsersCollection;
 import com.indoorway.android.fragments.sdk.map.IndoorwayMapFragment;
 import com.indoorway.android.fragments.sdk.map.MapFragment;
 import com.indoorway.android.map.sdk.listeners.OnObjectSelectedListener;
@@ -99,36 +101,29 @@ public class MapActivity extends AppCompatActivity implements AttachmentsControl
         mapView.getTouch().setOnClickListener(new Action1<Coordinates>() {
             @Override
             public void onAction(final Coordinates coordinates) {
-                IndoorwaySdk.instance()
-                        .visitors()
-                        .locations()
-                        .setOnCompletedListener(new Action1<List<VisitorLocation>>() {
-                            @Override
-                            public void onAction(List<VisitorLocation> visitorLocations) {
-                                for (VisitorLocation userLocation : visitorLocations) {
-                                    if(coordinates != null) {
-                                        try{
-                                            if (System.currentTimeMillis() - userLocation.getTimestamp().getTime() < 60000) {
-                                                if (coordinates.getLatitude() < userLocation.getLat() + 0.4f && coordinates.getLatitude() > userLocation.getLat() - 0.4f && coordinates.getLongitude() < userLocation.getLon() + 0.4f && coordinates.getLongitude() > userLocation.getLon() - 0.4f)
-                                                    Toast.makeText(MapActivity.this, userLocation.getVisitorUuid(), Toast.LENGTH_SHORT).show();
-                                            }
+                if (coordinates != null) {
+                    new Thread( new Runnable() {
+                        @Override
+                        public void run() {
+                            Log.d("Rika runnable", "users.size = " + UsersCollection.instance().size());
+                            for (final User user : UsersCollection.instance().getCollection()) {
+                                if (user.getVisitorLocation() == null)
+                                    continue;
+                                userController.logUser(user);
+                                double lat = user.getVisitorLocation().getLat();
+                                double lon = user.getVisitorLocation().getLon();
+                                if (coordinates.getLatitude() < lat + (2*0.4*8.98e-6) && coordinates.getLatitude() > lat - (2*0.4*8.98e-6) && coordinates.getLongitude() < lon + (2*0.4*8.98e-6) && coordinates.getLongitude() > lon - (2*0.4*8.98e-6)) {
+                                    //Toast.makeText(MapActivity.this, user.getUuid(), Toast.LENGTH_SHORT).show();
+                                    runOnUiThread(new Runnable() {
+                                        public void run() {
+                                            Toast.makeText(MapActivity.this, user.getUuid() + " " + user.getVisitorData().getName(), Toast.LENGTH_SHORT).show();
                                         }
-                                        catch(Exception ex){
-                                            Log.e("ERROR", "Coordinates are null");
-                                        }
-                                    }
+                                    });
                                 }
                             }
-                        })
-                        .setOnFailedListener(new Action1<IndoorwayTask.ProcessingException>() {
-                            @Override
-                            public void onAction(IndoorwayTask.ProcessingException e) {
-                                // todo message: failed
-                                Log.d("Rika ULoc", "Location fetch failed");
-                            }
-                        })
-                        .execute();
-
+                        }
+                    }).start();
+                }
             }
         });
 

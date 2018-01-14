@@ -56,17 +56,25 @@ public class UserController {
                         for (final VisitorLocation userLocation : visitorLocations) {
                             if (userLocation != null) {
                                 try {
-                                    if (System.currentTimeMillis() - userLocation.getTimestamp().getTime() < 60000) {
+                                    if (System.currentTimeMillis() - userLocation.getTimestamp().getTime() < 600000) {
                                         Log.d("Rika ULoc", "UserLoc detected: " + userLocation.toString());
 
 
                                         boolean userAlreadyFound = false;
                                         for (User userElem : UsersCollection.instance().getCollection()) {
+                                            if (userElem.getUuid().equals(userLocation.getVisitorUuid())) {
+                                                //Log.d("Rika loop", "user loc found");
+                                                userElem.setVisitorLocation(userLocation);
+                                                userAlreadyFound = true;
+                                                logUser(userElem);
+                                                break;
+                                            }
+                                        }
+                                        if (!userAlreadyFound) {
                                             User user = new User();
                                             user.setVisitorLocation(userLocation);
                                             user.setUuid(userLocation.getVisitorUuid());
                                             UsersCollection.instance().add(user);
-                                            //logUser(user);
                                         }
 
                                         DrawableCircle circle = new DrawableCircle(
@@ -111,12 +119,17 @@ public class UserController {
                             boolean userAlreadyFound = false;
                             for (User userElem : UsersCollection.instance().getCollection()) {
                                 if (userElem.getUuid().equals(userData.getUuid())) {
-                                    Log.d("Rika loop", "user loc found");
                                     userElem.setVisitorData(userData);
                                     userAlreadyFound = true;
                                     logUser(userElem);
                                     break;
                                 }
+                            }
+                            if (!userAlreadyFound) {
+                                User user = new User();
+                                user.setVisitorData(userData);
+                                user.setUuid(userData.getUuid());
+                                UsersCollection.instance().add(user);
                             }
                         }
                     }
