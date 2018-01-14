@@ -20,99 +20,93 @@ class Data
     public int subjectIDx;//look in Globals.java
     public boolean isActive;
     public boolean navigate;
-
-    private static Data instance = null;
-    protected Data() {}
-    public static Data getInstance()
-    {
-        if(instance != null)
-            instance = new Data();
-        return instance;
-    }
 }
 
 public class Database
 {
     public static String getName() {
-        return data.name;
+        return name;
     }
 
     public static void setName(String imie) {
-        data.name = imie;
+        name = imie;
         SaveToStorage();
         SaveToCloud();
     }
 
     public static String getCourse() {
-        return data.course;
+        return course;
     }
 
     public static void setCourse(String kierunek) {
-        data.course = kierunek;
+        course = kierunek;
         SaveToStorage();
         SaveToCloud();
     }
 
     public static int getYear() {
-        return data.year;
+        return year;
     }
 
     public static void setYear(int rok) {
-        data.year = rok;
+        year = rok;
         SaveToStorage();
         SaveToCloud();
     }
 
     public static int getSubjectIDx() {
-        return data.subjectIDx;
+        return subjectIDx;
     }
 
     public static void setSubjectIDx(int w) {
-        data.subjectIDx = w;
+        subjectIDx = w;
         SaveToStorage();
         SaveToCloud();
     }
 
     public static boolean isActive() {
-        return data.isActive;
+        return isActive;
     }
 
     public static void setActive(boolean active) {
-        data.isActive = active;
+        isActive = active;
         SaveToStorage();
         SaveToCloud();
     }
 
     public static boolean isNavigate() {
-        return data.navigate;
+        return navigate;
     }
 
     public static void setNavigate(boolean n) {
-        data.navigate = n;
+        navigate = n;
         SaveToStorage();
         SaveToCloud();
     }
 
-    private static Data data = Data.getInstance();
-    private static Context context;
+    private static String name;
+    private static String course;
+    private static String uuid;
+    private static int year;
+    private static int subjectIDx;//look in Globals.java
+    private static boolean isActive;
+    private static boolean navigate;
 
-    static {
-        data = new Data();
-    }
+    private static Context context;
 
     public static void SetContext(Context c)
     {
         context = c;
     }
 
-    public static void setUuid(String uuid){
-        data.uuid = uuid;
+    public static void setUuid(String uu){
+        uuid = uu;
         SaveToStorage();
         SaveToCloud();
     }
 
     public static String getUuid(){
-        return data.uuid;
+        return uuid;
     }
 
     /*
@@ -123,26 +117,26 @@ public class Database
     public static void LoadFromStorage()
     {
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
-        data.name = preferences.getString("name", "-");
-        data.uuid = preferences.getString("uuid", "-");
-        data.course = preferences.getString("course", "-");
-        data.year = preferences.getInt("year", 1);
-        data.subjectIDx = preferences.getInt("subjectID", 0);
-        data.isActive = preferences.getBoolean("isActive", true);
-        data.navigate = preferences.getBoolean("navigate", true);
+        name = preferences.getString("name", "-");
+        course = preferences.getString("course", "-");
+        uuid = preferences.getString("uuid", "-");
+        year = preferences.getInt("year", 1);
+        subjectIDx = preferences.getInt("subjectID", 0);
+        isActive = preferences.getBoolean("isActive", true);
+        navigate = preferences.getBoolean("navigate", true);
     }
     public static void SaveToStorage()
     {
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
         SharedPreferences.Editor edit = preferences.edit();
 
-        edit.putString("name", data.name);
-        edit.putString("uuid", data.uuid);
-        edit.putString("course", data.course);
-        edit.putInt("year", data.year);
-        edit.putInt("subjectID", data.subjectIDx);
-        edit.putBoolean("isActive", data.isActive);
-        edit.putBoolean("navigate", data.navigate);
+        edit.putString("name", name);
+        edit.putString("course", course);
+        edit.putString("uuid", uuid);
+        edit.putInt("year", year);
+        edit.putInt("subjectID", subjectIDx);
+        edit.putBoolean("isActive", isActive);
+        edit.putBoolean("navigate", navigate);
 
         edit.commit();
     }
@@ -159,19 +153,18 @@ public class Database
     //loads the data to person class
     public static void LoadFromCloud(VisitorData v, Data[] person)
     {
-        //Visitor v = IndoorwaySdk.instance().visitor().me();
         DecodeData(person, v.getMeta());
     }
 
     private static String EncodeData()
     {
-        return data.name + "," +
-                data.uuid + "," +
-                data.course + "," +
-                Integer.toString(data.year) + "," +
-                Integer.toString(data.subjectIDx) + "," +
-                Boolean.toString(data.isActive) + "," +
-                Boolean.toString(data.navigate);
+        return name + "," +
+                course + "," +
+                uuid + "," +
+                Integer.toString(year) + "," +
+                Integer.toString(subjectIDx) + "," +
+                Boolean.toString(isActive) + "," +
+                Boolean.toString(navigate);
     }
 
     //pass array to modify the value (java is pass-by-value type) we need reference
@@ -184,8 +177,8 @@ public class Database
             System.exit(-1);
         }
         person[0].name = d[0];
-        person[0].uuid = d[1];
-        person[0].course = d[2];
+        person[0].course = d[1];
+        person[0].uuid = d[2];
         person[0].year = Integer.parseInt(d[3]);
         person[0].subjectIDx = Integer.parseInt(d[4]);
         person[0].isActive = Boolean.parseBoolean(d[5]);

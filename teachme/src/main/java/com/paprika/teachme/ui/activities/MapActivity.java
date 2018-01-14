@@ -56,6 +56,21 @@ public class MapActivity extends AppCompatActivity implements AttachmentsControl
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_map);
 
+        int currState = getIntent().getIntExtra("MAP_ACTIVITY_STATE", 0);//todo
+        if(Globals.MapActivityState.SEARCH_RESULTS.ordinal() == currState) {
+            String targetUUID = getIntent().getStringExtra("TARGET_USER_ID");
+            Log.e("uuid", targetUUID);
+        }
+
+       /* switch(Globals.Subjects.v)
+        {
+            case Globals.MapActivityState.NORMAL:
+            default:
+                break;
+            case Globals.MapActivityState.SEARCH_RESULTS:
+                break;
+        }
+*/
         attachmentsController = new AttachmentsController(this, this, this);
         reportController = new ReportController(this);
         userController = new UserController(this);
@@ -83,7 +98,7 @@ public class MapActivity extends AppCompatActivity implements AttachmentsControl
                 }
         });
 
-        LoadData();
+       // LoadData();
     }
 
     @Override
@@ -120,7 +135,7 @@ public class MapActivity extends AppCompatActivity implements AttachmentsControl
     }
 
     @Override
-    public void onMapFragmentReady(MapFragment mapFragment) {
+    public void onMapFragmentReady(final MapFragment mapFragment) {
         MapView mapView = mapFragment.getMapView();
         mapView.setOnMapLoadCompletedListener(new Action1<IndoorwayMap>() {
             @Override
@@ -128,8 +143,9 @@ public class MapActivity extends AppCompatActivity implements AttachmentsControl
                 dotLayer = getMapFragment().getMapView().getMarker().addLayer(20f);
                 usersLayer = getMapFragment().getMapView().getMarker().addLayer(10f);
 
-                userController.drawUsersLocations(usersLayer);
+                userController.drawUsersLocations(usersLayer);///todo
 
+                //mapFragment.startPositioningService();
             }
         });
 

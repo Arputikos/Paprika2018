@@ -32,7 +32,8 @@ public class FirstRunActivity extends AppCompatActivity {
 
                     Visitor user = new Visitor();
                     user.setName(userName);
-                    user.setMeta(userCourse + "," + userYear + "," + " " + "," + " ");
+                    //user.setMeta(userCourse + "," + userYear + "," + " " + "," + " ");
+                    Database.SaveToCloud();//set meta
                     user.setShareLocation(true);
                     String id = user.getUuid();
 
@@ -40,8 +41,8 @@ public class FirstRunActivity extends AppCompatActivity {
 
                     Database.setName(userName);
                     Database.setCourse(userCourse);
-                    Database.setYear(userYear);
                     Database.setUuid(id);
+                    Database.setYear(userYear);
                     //go to next
                     startMapActivity();
                 }
