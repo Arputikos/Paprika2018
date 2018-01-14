@@ -103,6 +103,12 @@ public class Database
     private static boolean navigate;
 
     private static Context context;
+    private static Visitor v;
+
+    public static void SetVisitor(Visitor c)
+    {
+        v = c;
+    }
 
     public static void SetContext(Context c)
     {
@@ -153,7 +159,7 @@ public class Database
 
     //saves my settings to global database, so the others can see who i am and what I learn.
     //do it every change
-    public static void SaveToCloud(Visitor v)
+    /*public static void SaveToCloud(Visitor v)
     {
         //Visitor v = IndoorwaySdk.instance().visitor().me();
         if(null == v)
@@ -164,11 +170,11 @@ public class Database
         v.setMeta(EncodeData());
         Log.e("encode",v.getMeta());
 
-    }
+    }*/
 
     public static void SaveToCloud()
     {
-        Visitor v = IndoorwaySdk.instance().visitor().me();
+        //Visitor v = IndoorwaySdk.instance().visitor().me();
         if(null == v)
         {
             //error
@@ -180,9 +186,9 @@ public class Database
     }
 
     //loads the data to person class
-    public static void LoadFromCloud(VisitorData v, Data[] person)
+    public static void LoadFromCloud(VisitorData vv, Data[] person)
     {
-        DecodeData(person, v.getMeta());
+        DecodeData(person, vv.getMeta());
     }
 
     private static String EncodeData()

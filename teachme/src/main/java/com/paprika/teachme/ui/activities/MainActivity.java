@@ -27,12 +27,14 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+
         //loads from storage to memory, all user things
         Database.SetContext(this);
         Database.LoadFromStorage();
 
         visitorPreferences = new VisitorPreferences(this);
         String token = visitorPreferences.token.getOrDefault("");
+        IndoorwaySdk.configure(token);
 
         Visitor user = new Visitor();
         //user.setMeta(userCourse + "," + userYear + "," + " " + "," + " ");
@@ -44,9 +46,9 @@ public class MainActivity extends AppCompatActivity {
 
         IndoorwaySdk.instance().visitor().setup(user);
 
+        Database.SetVisitor(user);
         Database.LoadFromStorage();
-        Database.SaveToCloud(user);
-        Log.e("encode1",user.getMeta());
+        Database.SaveToCloud();
 
         // scan qr code
         findViewById(R.id.btnScan).setOnClickListener(new View.OnClickListener() {
