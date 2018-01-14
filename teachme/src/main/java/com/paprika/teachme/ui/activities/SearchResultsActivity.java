@@ -30,15 +30,19 @@ public class SearchResultsActivity extends AppCompatActivity {
         uuidOnList = new ArrayList<>();
         //todo backend - get people, printers etc and list here all which learn /sth/ or name ...
         for(User user : UsersCollection.instance().getCollection()){
-            if(user.getVisitorLocation()!= null){
+            if(user.getVisitorLocation()!= null && user.getVisitorData()!=null){
                 Data[] person = new Data[1];
+                Log.e("mylogi","base01");
                Database.LoadFromCloud(user.getVisitorData(), person);
+                Log.e("mylogi","base02");
                if(person == null) {
+                   Log.e("mylogi","baseif");
                    Log.e("aba", "the person is null");
                    continue;
                }
-                //listItem.add(person[0].name);//", " + person[0].course
-               // uuidOnList.add(user.getUuid());
+                Log.e("mylogi","base-else");
+                listItem.add(person[0].name);//", " + person[0].course
+                uuidOnList.add(user.getUuid());
             }
         }
 //        String[] listItems = new String[3];
@@ -51,6 +55,8 @@ public class SearchResultsActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search_results);
+
+        Database.SetContext(this);
 
         int foundItem = getIntent().getIntExtra("CLICKED_ITEM", 0);
 

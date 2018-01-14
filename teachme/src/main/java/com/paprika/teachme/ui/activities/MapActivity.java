@@ -56,6 +56,8 @@ public class MapActivity extends AppCompatActivity implements AttachmentsControl
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_map);
 
+        Database.SetContext(this);
+
         int currState = getIntent().getIntExtra("MAP_ACTIVITY_STATE", 0);//todo
         if(Globals.MapActivityState.SEARCH_RESULTS.ordinal() == currState) {
             String targetUUID = getIntent().getStringExtra("TARGET_USER_ID");

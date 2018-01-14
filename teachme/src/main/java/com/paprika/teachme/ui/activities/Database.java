@@ -20,6 +20,16 @@ class Data
     public int subjectIDx;//look in Globals.java
     public boolean isActive;
     public boolean navigate;
+
+    public Data() {
+        name = "";
+        course = "";
+        uuid = "";
+        year = 1;
+        subjectIDx = 0;
+        isActive = true;
+        navigate = true;
+    }
 }
 
 public class Database
@@ -146,6 +156,11 @@ public class Database
     public static void SaveToCloud()
     {
         Visitor v = IndoorwaySdk.instance().visitor().me();
+        if(null == v)
+        {
+            //error
+            System.exit(-2);
+        }
         v.setMeta(EncodeData());
         Log.e("encode",v.getMeta());
     }
@@ -170,11 +185,16 @@ public class Database
     //pass array to modify the value (java is pass-by-value type) we need reference
     private static void DecodeData(Data[] person, String D)
     {
+        if(person.length <= 0 || D.length() <= 0)
+        {
+            //error
+            System.exit(-1);
+        }
         String[] d = D.split(",");
         if(d.length < 7)
         {
             //error
-            System.exit(-1);
+            System.exit(-4);
         }
         person[0].name = d[0];
         person[0].course = d[1];

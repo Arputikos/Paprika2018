@@ -56,6 +56,8 @@ public class SearchActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search);
 
+        Database.SetContext(this);
+
         list = (ListView) findViewById(R.id.lvSearch);
 
         ArrayAdapter adapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, GetListItems(""));

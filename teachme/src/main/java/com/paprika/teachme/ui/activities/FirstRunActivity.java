@@ -18,6 +18,8 @@ public class FirstRunActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_first_run);
 
+        Database.SetContext(this);
+
         // scan qr code
         findViewById(R.id.btnFRNext).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -32,6 +34,9 @@ public class FirstRunActivity extends AppCompatActivity {
 
                     Visitor user = new Visitor();
                     user.setName(userName);
+                    //init defaults and save to not have null
+                    Database.LoadFromStorage();
+                    Database.SaveToCloud();
                     //user.setMeta(userCourse + "," + userYear + "," + " " + "," + " ");
                     Database.SaveToCloud();//set meta
                     user.setShareLocation(true);
