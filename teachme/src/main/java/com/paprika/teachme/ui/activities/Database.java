@@ -153,9 +153,9 @@ public class Database
 
     //saves my settings to global database, so the others can see who i am and what I learn.
     //do it every change
-    public static void SaveToCloud()
+    public static void SaveToCloud(Visitor v)
     {
-        Visitor v = IndoorwaySdk.instance().visitor().me();
+        //Visitor v = IndoorwaySdk.instance().visitor().me();
         if(null == v)
         {
             //error
@@ -163,6 +163,20 @@ public class Database
         }
         v.setMeta(EncodeData());
         Log.e("encode",v.getMeta());
+
+    }
+
+    public static void SaveToCloud()
+    {
+        Visitor v = IndoorwaySdk.instance().visitor().me();
+        if(null == v)
+        {
+            //error
+            System.exit(-7);
+        }
+        v.setMeta(EncodeData());
+        Log.e("encode",v.getMeta());
+
     }
 
     //loads the data to person class

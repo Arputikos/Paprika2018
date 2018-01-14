@@ -45,8 +45,8 @@ public class MainActivity extends AppCompatActivity {
         IndoorwaySdk.instance().visitor().setup(user);
 
         Database.LoadFromStorage();
-        Database.SaveToCloud();
-
+        Database.SaveToCloud(user);
+        Log.e("encode1",user.getMeta());
 
         // scan qr code
         findViewById(R.id.btnScan).setOnClickListener(new View.OnClickListener() {
