@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -55,6 +56,8 @@ public class SearchActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search);
 
+        Database.SetContext(this);
+
         list = (ListView) findViewById(R.id.lvSearch);
 
         ArrayAdapter adapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, GetListItems(""));
@@ -95,7 +98,7 @@ public class SearchActivity extends AppCompatActivity {
 
     void startSearchResultsActivity(int clickedItem) {
         Intent i = new Intent(this, SearchResultsActivity.class);
-        i.putExtra("CLICKED_ITEM", Globals.Subjects[clickedItem]);//todo people printers ...
+        i.putExtra("CLICKED_ITEM", clickedItem);//todo people printers ...
         startActivity(i);//temp todo
         //finishAffinity();
     }

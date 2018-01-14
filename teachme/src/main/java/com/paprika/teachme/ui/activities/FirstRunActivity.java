@@ -18,6 +18,8 @@ public class FirstRunActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_first_run);
 
+        Database.SetContext(this);
+
         // scan qr code
         findViewById(R.id.btnFRNext).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -30,18 +32,10 @@ public class FirstRunActivity extends AppCompatActivity {
                     String userCourse = course.getText().toString();
                     int userYear = Integer.parseInt(year.getText().toString());
 
-                    Visitor user = new Visitor();
-                    user.setName(userName);
-                    user.setMeta(userCourse + "," + userYear + "," + " " + "," + " ");
-                    user.setShareLocation(true);
-                    String id = user.getUuid();
-
-                    IndoorwaySdk.instance().visitor().setup(user);
-
                     Database.setName(userName);
                     Database.setCourse(userCourse);
+                    Database.setUuid("someId");
                     Database.setYear(userYear);
-                    Database.setUuid(id);
                     //go to next
                     startMapActivity();
                 }
