@@ -1,5 +1,7 @@
 package com.paprika.teachme.ui.activities;
 
+import java.util.Random;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -38,8 +40,9 @@ public class MainActivity extends AppCompatActivity {
 
         Visitor user = new Visitor();
         //user.setMeta(userCourse + "," + userYear + "," + " " + "," + " ");
-        user.setName("name");
-        user.setMeta("meta");
+        user.setName("Name");
+        Random a = new Random();
+        user.setMeta(Globals.Subjects[a.nextInt(Globals.Subjects.length)]);
         //Database.SaveToCloud();//set meta
         user.setShareLocation(true);
         String id = user.getUuid();
